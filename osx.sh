@@ -5,6 +5,12 @@
 # Ask for the administrator password upfront
 sudo -v
 
+#set vars
+export COMPUTERNAME='dc-mbp'
+export HOSTNAME='dc-mbp'
+export LOCALHOSTNAME='dc-mbp'
+export NETBIOSNAME='dc-mbp'
+
 # Keep-alive: update existing `sudo` time stamp until `.osx` has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
@@ -26,9 +32,11 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   defaults write com.apple.menuextra.battery ShowTime -string "YES"
 
   # Menu bar: hide the useless Time Machine and Volume icons
+  ### CHANGE to hide additional menu items?
   defaults write com.apple.systemuiserver menuExtras -array "/System/Library/CoreServices/Menu Extras/Bluetooth.menu" "/System/Library/CoreServices/Menu Extras/AirPort.menu" "/System/Library/CoreServices/Menu Extras/Battery.menu" "/System/Library/CoreServices/Menu Extras/Clock.menu"
 
   # Always show scrollbars
+  ### CHANGE to 'Automatically based on input device' ??
   defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
 
   # Disable smooth scrolling
@@ -54,19 +62,26 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 
   # Disable the “Are you sure you want to open this application?” dialog
-  defaults write com.apple.LaunchServices LSQuarantine -bool false
+  # CHANGE enable or disable?
+  # defaults write com.apple.LaunchServices LSQuarantine -bool false
 
   # Display ASCII control characters using caret notation in standard text views
   # Try e.g. `cd /tmp; unidecode "\x{0000}" > cc.txt; open -e cc.txt`
   defaults write NSGlobalDomain NSTextShowsControlCharacters -bool true
 
   # Disable Resume system-wide
+  # CHANGE - disable system-wide or disable for specific apps?
+  #defaults write com.apple.Safari NSQuitAlwaysKeepsWindows -bool false
+  #defaults write com.google.Chrome NSQuitAlwaysKeepsWindows -bool false
+  #defaults write com.apple.Preview NSQuitAlwaysKeepsWindows -bool false
   defaults write NSGlobalDomain NSQuitAlwaysKeepsWindows -bool false
 
   # Disable automatic termination of inactive apps
+  # CHANGE - keep?
   defaults write NSGlobalDomain NSDisableAutomaticTermination -bool true
 
   # Disable the crash reporter
+  # CHANGE - disable?
   #defaults write com.apple.CrashReporter DialogType -string "none"
 
   # Set Help Viewer windows to non-floating mode
@@ -85,6 +100,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   systemsetup -setrestartfreeze on
 
   # Never go into computer sleep mode
+  # CHANGE - set specific time? or always use keycombo to lock?
   systemsetup -setcomputersleep Off > /dev/null
 
   # Check for software updates daily, not just once per week
@@ -95,35 +111,44 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   ###############################################################################
 
   # Trackpad: enable tap to click for this user and for the login screen
-  defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
-  defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
-  defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+  # CHANGE - disable tap to click?
+  #defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+  #defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+  #defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
   # Trackpad: map bottom right corner to right-click
-  defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadCornerSecondaryClick -int 2
-  defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightClick -bool true
-  defaults -currentHost write NSGlobalDomain com.apple.trackpad.trackpadCornerClickBehavior -int 1
-  defaults -currentHost write NSGlobalDomain com.apple.trackpad.enableSecondaryClick -bool true
+  # CHANGE - disable for now
+  #defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadCornerSecondaryClick -int 2
+  #defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightClick -bool true
+  #defaults -currentHost write NSGlobalDomain com.apple.trackpad.trackpadCornerClickBehavior -int 1
+  #defaults -currentHost write NSGlobalDomain com.apple.trackpad.enableSecondaryClick -bool true
 
   # Trackpad: swipe between pages with three fingers
-  defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool true
-  defaults -currentHost write NSGlobalDomain com.apple.trackpad.threeFingerHorizSwipeGesture -int 1
-  defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerHorizSwipeGesture -int 1
+  # CHANGE - enable 3-finger swipe? what about selecting text?
+  # swiping pages with 2 fingers fuxup my game
+  #defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool true
+  #defaults -currentHost write NSGlobalDomain com.apple.trackpad.threeFingerHorizSwipeGesture -int 1
+  #defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerHorizSwipeGesture -int 1
 
   # Disable “natural” (Lion-style) scrolling
-  defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
+  # CHANGE - keep enabled?
+  #defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
 
   # Increase sound quality for Bluetooth headphones/headsets
+  # DUH
   defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
 
   # Enable full keyboard access for all controls
   # (e.g. enable Tab in modal dialogs)
-  defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+  # CHANGE - maybe enable full access
+  #defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
   # Enable access for assistive devices
-  echo -n 'a' | sudo tee /private/var/db/.AccessibilityAPIEnabled > /dev/null 2>&1
-  sudo chmod 444 /private/var/db/.AccessibilityAPIEnabled
-  # TODO: avoid GUI password prompt somehow (http://apple.stackexchange.com/q/60476/4408)
+  # CHANGE - 
+  #echo -n 'a' | sudo tee /private/var/db/.AccessibilityAPIEnabled > /dev/null 2>&1
+  #sudo chmod 444 /private/var/db/.AccessibilityAPIEnabled
+
+  # TODO: accessibility? avoid GUI password prompt somehow (http://apple.stackexchange.com/q/60476/4408)
   #sudo osascript -e 'tell application "System Events" to set UI elements enabled to true'
 
   # Use scroll gesture with the Ctrl (^) modifier key to zoom
@@ -133,9 +158,11 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
 
   # Disable press-and-hold for keys in favor of key repeat
+  # CHANGE - how will this affect keyremap config?
   defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
   # Set a blazingly fast keyboard repeat rate
+  # CHANGE - how will this affect keyremap config?
   defaults write NSGlobalDomain KeyRepeat -int 0
 
   # Automatically illuminate built-in MacBook keyboard in low light
@@ -147,14 +174,15 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   # Note: if you’re in the US, replace `EUR` with `USD`, `Centimeters` with
   # `Inches`, and `true` with `false`.
   defaults write NSGlobalDomain AppleLanguages -array "en" "nl"
-  defaults write NSGlobalDomain AppleLocale -string "en_GB@currency=EUR"
+  defaults write NSGlobalDomain AppleLocale -string "en_US@currency=USD"
   defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
   defaults write NSGlobalDomain AppleMetricUnits -bool true
 
   # Set the timezone; see `systemsetup -listtimezones` for other values
-  systemsetup -settimezone "Europe/Brussels" > /dev/null
+  systemsetup -settimezone "America/New_York" > /dev/null
 
   # Disable auto-correct
+  # YES
   defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 
   ###############################################################################
@@ -185,6 +213,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   ###############################################################################
 
   # Finder: allow quitting via ⌘ + Q; doing so will also hide desktop icons
+  # CHANGE - really?
   defaults write com.apple.finder QuitMenuItem -bool true
 
   # Finder: disable window animations and Get Info animations
@@ -197,6 +226,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
 
   # Finder: show hidden files by default
+  # CHANGE - thank jesus
   defaults write com.apple.finder AppleShowAllFiles -bool true
 
   # Finder: show all filename extensions
@@ -209,12 +239,14 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   defaults write com.apple.finder QLEnableTextSelection -bool true
 
   # Display full POSIX path as Finder window title
+  # CHANGE - thank god
   defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 
   # When performing a search, search the current folder by default
   defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
   # Disable the warning when changing a file extension
+  # CHANGE - thank moses
   defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 
   # Avoid creating .DS_Store files on network volumes
@@ -261,9 +293,11 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   defaults write com.apple.finder EmptyTrashSecurely -bool true
 
   # Enable AirDrop over Ethernet and on unsupported Macs running Lion
-  defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
+  # CHANGE - do i need airdrop?
+  #defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
 
   # Show the ~/Library folder
+  # CHANGE - thank zoroaster
   chflags nohidden ~/Library
 
   # Remove Dropbox’s green checkmark icons in Finder
@@ -279,6 +313,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   defaults write com.apple.dock mouse-over-hilte-stack -bool true
 
   # Set the icon size of Dock items to 36 pixels
+  # CHANGE - best size?
   defaults write com.apple.dock tilesize -int 36
 
   # Enable spring loading for all Dock items
@@ -290,6 +325,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   # Wipe all (default) app icons from the Dock
   # This is only really useful when setting up a new Mac, or if you don’t use
   # the Dock to launch apps.
+  # CHANGE - might be useful on new install
   #defaults write com.apple.dock persistent-apps -array
 
   # Don’t animate opening applications from the Dock
@@ -300,9 +336,11 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
   # Don’t group windows by application in Mission Control
   # (i.e. use the old Exposé behavior instead)
-  defaults write com.apple.dock expose-group-by-app -bool false
+  # CHANGE - i kind of like grouped apps
+  #defaults write com.apple.dock expose-group-by-app -bool false
 
   # Don’t show Dashboard as a Space
+  # CHANGE - thank buddha
   defaults write com.apple.dock dashboard-in-overlay -bool true
 
   # Remove the auto-hiding Dock delay
@@ -311,19 +349,23 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   defaults write com.apple.dock autohide-time-modifier -float 0
 
   # Enable the 2D Dock
+  # CHANGE - what does this look like?
   #defaults write com.apple.dock no-glass -bool true
 
   # Automatically hide and show the Dock
   defaults write com.apple.dock autohide -bool true
 
   # Make Dock icons of hidden applications translucent
+  # CHANGE - what's this?
   defaults write com.apple.dock showhidden -bool true
 
   # Reset Launchpad
-  find ~/Library/Application\ Support/Dock -name "*.db" -maxdepth 1 -delete
+  # CHANGE - does this delete my launchpad... do i even care? 
+  #find ~/Library/Application\ Support/Dock -name "*.db" -maxdepth 1 -delete
 
   # Add iOS Simulator to Launchpad
-  ln -s /Applications/Xcode.app/Contents/Applications/iPhone\ Simulator.app /Applications/iOS\ Simulator.app
+  # CHANGE - app required?
+  #ln -s /Applications/Xcode.app/Contents/Applications/iPhone\ Simulator.app /Applications/iOS\ Simulator.app
 
   # Add a spacer to the left side of the Dock (where the applications are)
   #defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type="spacer-tile";}'
@@ -331,19 +373,29 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   #defaults write com.apple.dock persistent-others -array-add '{tile-data={}; tile-type="spacer-tile";}'
 
   # Hot corners
+  # CHANGE - set top hot corners?
+
   # Top left screen corner → Mission Control
-  defaults write com.apple.dock wvous-tl-corner -int 2
-  defaults write com.apple.dock wvous-tl-modifier -int 0
+  #defaults write com.apple.dock wvous-tl-corner -int 2
+  #defaults write com.apple.dock wvous-tl-modifier -int 0
+
   # Top right screen corner → Desktop
-  defaults write com.apple.dock wvous-tr-corner -int 4
-  defaults write com.apple.dock wvous-tr-modifier -int 0
+  #defaults write com.apple.dock wvous-tr-corner -int 4
+  #defaults write com.apple.dock wvous-tr-modifier -int 0
+
   # Bottom left screen corner → Start screen saver
   defaults write com.apple.dock wvous-bl-corner -int 5
   defaults write com.apple.dock wvous-bl-modifier -int 0
 
+  # Bottom right screen corner → Application Windows
+  defaults write com.apple.dock wvous-br-corner -int 3
+  defaults write com.apple.dock wvous-br-modifier -int 0
+
   ###############################################################################
   # Safari & WebKit                                                             #
   ###############################################################################
+
+  # CHANGE - i don't use safari.  delete?
 
   # Set Safari’s home page to `about:blank` for faster loading
   defaults write com.apple.Safari HomePage -string "about:blank"
@@ -381,6 +433,8 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   # iTunes                                                                      #
   ###############################################################################
 
+  # CHANGE - i don't use iTunes.  delete?
+
   # Disable the iTunes store link arrows
   defaults write com.apple.iTunes show-store-link-arrows -bool false
 
@@ -406,6 +460,8 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   # Mail                                                                        #
   ###############################################################################
 
+  # CHANGE - i dont use mail anymore.  delete?
+
   # Disable send and reply animations in Mail.app
   defaults write com.apple.mail DisableReplyAnimations -bool true
   defaults write com.apple.mail DisableSendAnimations -bool true
@@ -420,14 +476,17 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   # Terminal                                                                    #
   ###############################################################################
 
+  # CHANGE - i don't use terminal.  iTerm config?  delete?
+
   # Only use UTF-8 in Terminal.app
   defaults write com.apple.terminal StringEncodings -array 4
 
   # Use a modified version of the Pro theme by default in Terminal.app
-  open "$HOME/init/Mathias.terminal"
-  sleep 1 # Wait a bit to make sure the theme is loaded
-  defaults write com.apple.terminal "Default Window Settings" -string "Mathias"
-  defaults write com.apple.terminal "Startup Window Settings" -string "Mathias"
+  # CHANGE - don't have this theme
+  #open "$HOME/init/Mathias.terminal"
+  #sleep 1 # Wait a bit to make sure the theme is loaded
+  #defaults write com.apple.terminal "Default Window Settings" -string "Mathias"
+  #defaults write com.apple.terminal "Startup Window Settings" -string "Mathias"
 
   # Enable “focus follows mouse” for Terminal.app and all X11 apps
   # i.e. hover over a window and start typing in it without clicking first
@@ -437,6 +496,8 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   ###############################################################################
   # Time Machine                                                                #
   ###############################################################################
+
+  # CHANGE - i don't use time machine.  disable completely?
 
   # Prevent Time Machine from prompting to use new hard drives as backup volume
   defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
@@ -449,10 +510,12 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   ###############################################################################
 
   # Enable the debug menu in Address Book
-  defaults write com.apple.addressbook ABShowDebugMenu -bool true
+  # CHANGE - i don't use address book
+  #defaults write com.apple.addressbook ABShowDebugMenu -bool true
 
   # Enable Dashboard dev mode (allows keeping widgets on the desktop)
-  defaults write com.apple.dashboard devmode -bool true
+  # CHANGE - don't use dashboard, set to false?
+  defaults write com.apple.dashboard devmode -bool false
 
   # Enable the debug menu in iCal (pre-10.8)
   defaults write com.apple.iCal IncludeDebugMenu -bool true
@@ -482,37 +545,44 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   ###############################################################################
 
   # Allow installing user scripts via GitHub or Userscripts.org
-  defaults write com.google.Chrome ExtensionInstallSources -array "https://*.github.com/*" "http://userscripts.org/*"
-  defaults write com.google.Chrome.canary ExtensionInstallSources -array "https://*.github.com/*" "http://userscripts.org/*"
+  # CHANGE - keep disabled by default 
+  #defaults write com.google.Chrome ExtensionInstallSources -array "https://*.github.com/*" "http://userscripts.org/*"
+  #defaults write com.google.Chrome.canary ExtensionInstallSources -array "https://*.github.com/*" "http://userscripts.org/*"
+
+  # CHANGE - other chrome settings?
 
   ###############################################################################
   # SizeUp.app                                                                  #
   ###############################################################################
+  
+  # CHANGE - using divvy at the moment, try sizeup?
 
   # Start SizeUp at login
-  defaults write com.irradiatedsoftware.SizeUp StartAtLogin -bool true
+  #defaults write com.irradiatedsoftware.SizeUp StartAtLogin -bool true
 
   # Don’t show the preferences window on next start
-  defaults write com.irradiatedsoftware.SizeUp ShowPrefsOnNextStart -bool false
+  #defaults write com.irradiatedsoftware.SizeUp ShowPrefsOnNextStart -bool false
 
   ###############################################################################
   # Transmission.app                                                            #
   ###############################################################################
 
+  # CHANGE - i dont use transmission, install?
+
   # Use `~/Documents/Torrents` to store incomplete downloads
-  defaults write org.m0k.transmission UseIncompleteDownloadFolder -bool true
-  defaults write org.m0k.transmission IncompleteDownloadFolder -string "${HOME}/Documents/Torrents"
+  #defaults write org.m0k.transmission UseIncompleteDownloadFolder -bool true
+  #defaults write org.m0k.transmission IncompleteDownloadFolder -string "${HOME}/Documents/Torrents"
 
   # Don’t prompt for confirmation before downloading
-  defaults write org.m0k.transmission DownloadAsk -bool false
+  #defaults write org.m0k.transmission DownloadAsk -bool false
 
   # Trash original torrent files
-  defaults write org.m0k.transmission DeleteOriginalTorrent -bool true
+  #defaults write org.m0k.transmission DeleteOriginalTorrent -bool true
 
   # Hide the donate message
-  defaults write org.m0k.transmission WarningDonate -bool false
+  #defaults write org.m0k.transmission WarningDonate -bool false
   # Hide the legal disclaimer
-  defaults write org.m0k.transmission WarningLegal -bool false
+  #defaults write org.m0k.transmission WarningLegal -bool false
 
   ###############################################################################
   # Twitter.app                                                                 #
@@ -543,9 +613,14 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   # Kill affected applications                                                  #
   ###############################################################################
 
+#  for app in "Address Book" "Calendar" "Contacts" "Dashboard" "Dock" "Finder" \
+#    "Macil" "Safari" "SizeUp" "SystemUIServer" "Terminal" "Transmission" \
+#    "Twitteritter" "iCal" "iTunes"; do
+
+  # CHANGE - remove a few apps, twitter misnamed?
   for app in "Address Book" "Calendar" "Contacts" "Dashboard" "Dock" "Finder" \
-    "Macil" "Safari" "SizeUp" "SystemUIServer" "Terminal" "Transmission" \
-    "Twitteritter" "iCal" "iTunes"; do
+    "Macil" "Safari" "SystemUIServer" "Terminal" \
+    "Twitter" "iCal"; do
   killall "$app" > /dev/null 2>&1
 done
 echo "echoDone. Note that some of these changes require a logout/restart to take effect."
