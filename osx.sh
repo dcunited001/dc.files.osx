@@ -36,7 +36,6 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   defaults write com.apple.systemuiserver menuExtras -array "/System/Library/CoreServices/Menu Extras/Bluetooth.menu" "/System/Library/CoreServices/Menu Extras/AirPort.menu" "/System/Library/CoreServices/Menu Extras/Battery.menu" "/System/Library/CoreServices/Menu Extras/Clock.menu"
 
   # Always show scrollbars
-  ### CHANGE to 'Automatically based on input device' ??
   defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
 
   # Disable smooth scrolling
@@ -69,15 +68,15 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   # Try e.g. `cd /tmp; unidecode "\x{0000}" > cc.txt; open -e cc.txt`
   defaults write NSGlobalDomain NSTextShowsControlCharacters -bool true
 
-  # Disable Resume system-wide
-  # CHANGE - disable system-wide or disable for specific apps?
+  # Disable Resume on per-app basis
   #defaults write com.apple.Safari NSQuitAlwaysKeepsWindows -bool false
   #defaults write com.google.Chrome NSQuitAlwaysKeepsWindows -bool false
   #defaults write com.apple.Preview NSQuitAlwaysKeepsWindows -bool false
+
+  # Disable Resume system-wide
   defaults write NSGlobalDomain NSQuitAlwaysKeepsWindows -bool false
 
   # Disable automatic termination of inactive apps
-  # CHANGE - keep?
   defaults write NSGlobalDomain NSDisableAutomaticTermination -bool true
 
   # Disable the crash reporter
@@ -92,15 +91,10 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   # Adobe Illustrator CS5 :(
   #echo "0x08000100:0" > ~/.CFUserTextEncoding
 
-  # Reveal IP address, hostname, OS version, etc. when clicking the clock
-  # in the login window
-  sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
-
   # Restart automatically if the computer freezes
   systemsetup -setrestartfreeze on
 
-  # Never go into computer sleep mode
-  # CHANGE - set specific time? or always use keycombo to lock?
+  # Never go into computer sleep mode 
   systemsetup -setcomputersleep Off > /dev/null
 
   # Check for software updates daily, not just once per week
@@ -131,11 +125,9 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   #defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerHorizSwipeGesture -int 1
 
   # Disable “natural” (Lion-style) scrolling
-  # CHANGE - keep enabled?
   #defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
 
   # Increase sound quality for Bluetooth headphones/headsets
-  # DUH
   defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
 
   # Enable full keyboard access for all controls
@@ -157,12 +149,14 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
 
   # Disable press-and-hold for keys in favor of key repeat
-  # CHANGE - how will this affect keyremap config?
   defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
   # Set a blazingly fast keyboard repeat rate
-  # CHANGE - how will this affect keyremap config?
   defaults write NSGlobalDomain KeyRepeat -int 0
+  # TODO: key repeat delay?
+
+  # Disable capslock key (need to test)
+  # /usr/bin/defaults -currentHost write -g 'com.apple.keyboard.modifiermapping.1452-566-0' -array '<dict><key>HIDKeyboardModifierMappingDst</key><integer>-1</integer><key>HIDKeyboardModifierMappingSrc</key><integer>0</integer></dict>'
 
   # Automatically illuminate built-in MacBook keyboard in low light
   defaults write com.apple.BezelServices kDim -bool true
@@ -180,17 +174,53 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   # Set the timezone; see `systemsetup -listtimezones` for other values
   systemsetup -settimezone "America/New_York" > /dev/null
 
-  # Disable auto-correct
-  # YES
+  # Disable auto-correct - YES!
   defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+
+  ###############################################################################
+  # Security                                                                    #
+  ###############################################################################
+
+  defaults write com.apple.screensaver askForPassword -int 1
+  defaults write com.apple.screensaver askForPasswordDelay -int 0
+
+  sudo defaults write /Library/Preferences/com.apple.loginwindow SHOWFULLNAME -bool true
+  sudo defaults write /Library/Preferences/com.apple.loginwindow LoginwindowText -string "Locked"
+
+  # (Lion Server Only) Reveal IP address, hostname, OS version, etc. when clicking the clock in the login window
+  # CHANGE - do not show this info
+  #sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
+
+  # set login picture (need to test)
+  #sudo defaults write /Library/Preferences/com.apple.loginwindow DesktopPicture /Users/Shared/mynewbackground.jpg
+
+  # set Login Window MAC OS X Title (need to test)
+  #defaults write /Library/Preferences/com.apple.loginwindow LogInMacOSXTitle -path
+
+  # set Login Window Apple Logo (need to test)
+  #defaults write /Library/Preferences/com.apple.loginwindow LogInAppleLogo -path
+
+  # TODO: require admin password to change locked prefs (find equivalent command)
+  #PlistBuddy -c "Set :rights:system.preferences:shared false" /private/etc/authorization
+
+  # TODO: privacy - disable location services
+  # TODO: safe downloads list?
+  # TODO: disable remote infrared
+  # TODO: filevault?
+  # TODO: other firewall settings?
+
+  # TODO: disable automatic login
+  # TODO: disable guest user
+
+  #firewall on/off: 0=off, 1=on, 2=essential services only
+  sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
+
+  #firewall stealth mode
+  #sudo defaults write /Library/Preferences/com.apple.alf stealthenabled -int 1
 
   ###############################################################################
   # Screen                                                                      #
   ###############################################################################
-
-  # Require password immediately after sleep or screen saver begins
-  defaults write com.apple.screensaver askForPassword -int 1
-  defaults write com.apple.screensaver askForPasswordDelay -int 0
 
   # Save screenshots to the desktop
   defaults write com.apple.screencapture location -string "$HOME/Desktop"
@@ -210,6 +240,9 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   ###############################################################################
   # Finder                                                                      #
   ###############################################################################
+
+  #max label lines? 1, 2, or 3 .. what is this?
+  #defaults write com.apple.finder MaximumLabelLines -integer 1;killall Finder
 
   # Finder: allow quitting via ⌘ + Q; doing so will also hide desktop icons
   # CHANGE - really?
@@ -308,14 +341,16 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   # Dock & hot corners                                                          #
   ###############################################################################
 
+  #defaults write com.apple.dock showshadow -boolean YES
+
+  #dock position/size
+  defaults write com.apple.dock orientation -string 'right'
+  defaults write com.apple.dock tilesize -int 28
+
   # Enable highlight hover effect for the grid view of a stack (Dock)
   defaults write com.apple.dock mouse-over-hilte-stack -bool true
 
-  # Set the icon size of Dock items to 36 pixels
-  # CHANGE - best size?
-  defaults write com.apple.dock tilesize -int 36
-
-  # Enable spring loading for all Dock items
+  # Spring loading for all Dock items (open app when hovering while drag&dropping item)
   defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true
 
   # Show indicator lights for open applications in the Dock
@@ -333,13 +368,10 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   # Speed up Mission Control animations
   defaults write com.apple.dock expose-animation-duration -float 0.1
 
-  # Don’t group windows by application in Mission Control
-  # (i.e. use the old Exposé behavior instead)
-  # CHANGE - i kind of like grouped apps
-  #defaults write com.apple.dock expose-group-by-app -bool false
+  # Do group windows by application in Mission Control
+  defaults write com.apple.dock expose-group-by-app -bool true
 
   # Don’t show Dashboard as a Space
-  # CHANGE - thank buddha
   defaults write com.apple.dock dashboard-in-overlay -bool true
 
   # Remove the auto-hiding Dock delay
@@ -609,6 +641,13 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
   defaults write com.twitter.twitter-mac HideInBackground -bool true
 
   ###############################################################################
+  # Misc Preferences                                                            #
+  ###############################################################################
+
+  defaults write com.apple.diskcopy expert-mode -boolean YES
+  defaults write com.apple.dvdplayer EnableDebugging -boolean true
+
+  ###############################################################################
   # Kill affected applications                                                  #
   ###############################################################################
 
@@ -622,4 +661,6 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
     "Twitter" "iCal"; do
   killall "$app" > /dev/null 2>&1
 done
-echo "echoDone. Note that some of these changes require a logout/restart to take effect."
+echo "Done. Note that some of these changes require a logout/restart to take effect."
+
+echo "  (configure missing security settings!)"
