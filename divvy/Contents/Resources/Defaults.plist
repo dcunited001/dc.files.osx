@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>overlay_width</key>
+	<integer>320</integer>
+	<key>overlay_height</key>
+	<integer>280</integer>
+	<key>top_offset</key>
+	<integer>44</integer>
+	<key>small_radius</key>
+	<integer>2</integer>
+	<key>font_size</key>
+	<integer>18</integer>
+	<key>alpha</key>
+	<real>0.6</real>
+	<key>padding</key>
+	<integer>20</integer>
+	<key>radius</key>
+	<integer>8</integer>
+	<key>autostart</key>
+	<false/>
+	<key>showMenuIcon</key>
+	<true/>
+	<key>mustDismissPanel</key>
+	<false/>
+	<key>showTooltips</key>
+	<true/>
+	<key>autoUpdateCheck</key>
+	<false/>
+	<key>enableAnimations</key>
+	<true/>
+	<key>showResizePreview</key>
+	<true/>
+	<key>enableBackgroundBlur</key>
+	<true/>
+	<key>defaultRowCount</key>
+	<integer>6</integer>
+	<key>defaultColumnCount</key>
+	<integer>6</integer>
+	<key>useDefaultGrid</key>
+	<false/>
+	<key>lastRowCount</key>
+	<integer>6</integer>
+	<key>lastColumnCount</key>
+	<integer>6</integer>
+	<key>useMonitorCycling</key>
+	<false/>
+	<key>defaultScreenMarginLeft</key>
+	<integer>10</integer>
+	<key>defaultScreenMarginRight</key>
+	<integer>10</integer>
+	<key>defaultScreenMarginTop</key>
+	<integer>10</integer>
+	<key>defaultScreenMarginBottom</key>
+	<integer>10</integer>
+	<key>defaultWindowMarginWidth</key>
+	<integer>10</integer>
+	<key>defaultWindowMarginHeight</key>
+	<integer>10</integer>
+	<key>enableMargins</key>
+	<false/>
+</dict>
+</plist>
