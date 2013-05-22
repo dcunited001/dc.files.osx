@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>Choosy</string>
+	<key>CFBundleHelpBookFolder</key>
+	<string>ChoosyHelp</string>
+	<key>CFBundleHelpBookName</key>
+	<string>Choosy Help</string>
+	<key>CFBundleIconFile</key>
+	<string>choosy.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.choosyosx.ChoosyPrefPane</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Choosy</string>
+	<key>CFBundlePackageType</key>
+	<string>BNDL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.3</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.3</string>
+	<key>NSMainNibFile</key>
+	<string>Choosy_prefpanePref</string>
+	<key>NSPrefPaneHelpAnchors</key>
+	<array>
+		<dict>
+			<key>anchor</key>
+			<string>ChoosyHelpContents</string>
+			<key>title</key>
+			<string>Choosy Help</string>
+		</dict>
+	</array>
+	<key>NSPrefPaneIconFile</key>
+	<string>choosy.icns</string>
+	<key>NSPrefPaneIconLabel</key>
+	<string>Choosy</string>
+	<key>NSPrincipalClass</key>
+	<string>ChoosyPrefPane</string>
+	<key>SUFeedURL</key>
+	<string>http://www.choosyosx.com/sparkle/feed</string>
+	<key>SUPublicDSAKeyFile</key>
+	<string>dsa_pub.pem</string>
+</dict>
+</plist>
